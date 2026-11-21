@@ -1,0 +1,141 @@
+/**
+ * EasyTour-Cambio · folha de estilos global
+ *
+ * Identidade visual: branco como cor principal, azul como cor secundária,
+ * azul-escuro nos títulos e destaques, cinzento-claro em fundos e divisórias.
+ * Abordagem mobile first: os estilos base servem o telemóvel e as media queries
+ * acrescentam refinamentos para ecrãs maiores.
+ */
+
+:root {
+  /* Cores */
+  --white: #ffffff;
+  --surface: #f4f7fb;
+  --surface-2: #eef3f9;
+  --line: #e2e8f0;
+  --line-strong: #cfd9e6;
+
+  --navy-900: #0b2545;
+  --navy-800: #12354f;
+  --navy-700: #164a75;
+
+  --blue-600: #1360c4;
+  --blue-500: #1f6feb;
+  --blue-100: #dbeafe;
+  --blue-50: #eff6ff;
+
+  --text: #16283c;
+  --muted: #5a7086;
+  --muted-2: #7b8fa4;
+
+  --danger: #b42318;
+  --danger-bg: #fef3f2;
+  --warning: #8a5a00;
+  --warning-bg: #fffaeb;
+  --success: #067647;
+
+  /* Formas */
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+
+  --shadow-card:
+    0 1px 2px rgba(11, 37, 69, 0.04),
+    0 24px 48px -32px rgba(11, 37, 69, 0.45);
+
+  /* Tipografia */
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, 'Noto Sans', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text);
+  background-color: var(--surface);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+p {
+  overflow-wrap: break-word;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Largura comum a todo o conteúdo. */
+.shell {
+  width: min(100% - 2rem, 980px);
+  margin-inline: auto;
+}
+
+@media (min-width: 700px) {
+  .shell {
+    width: min(100% - 3rem, 980px);
+  }
+}
+
+/* Foco visível e consistente para navegação por teclado. */
+:focus-visible {
+  outline: 2px solid var(--blue-500);
+  outline-offset: 2px;
+}
+
+/* Transições suaves apenas para quem as aceita. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Ecrãs muito estreitos: evita qualquer deslocamento horizontal. */
+@media (max-width: 360px) {
+  .shell {
+    width: min(100% - 1.25rem, 980px);
+  }
+}
