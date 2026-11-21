@@ -1,13 +1,29 @@
+<script setup>
+import { ref } from 'vue'
+
+const menuOpen = ref(false)
+
+function closeMenu() {
+  menuOpen.value = false
+}
+</script>
+
 <template>
   <header class="site-header">
     <div class="header-container">
-      <a class="brand" href="#inicio" aria-label="EasyTour - página inicial" @click="closeMenu">
+
+      <RouterLink
+        class="brand"
+        to="/inicio"
+        aria-label="EasyTour - página inicial"
+        @click="closeMenu"
+      >
         <span class="brand-mark" aria-hidden="true">E</span>
         <span class="brand-copy">
           <strong>EasyTour</strong>
           <small>Descubra Moçambique</small>
         </span>
-      </a>
+      </RouterLink>
 
       <button
         class="menu-toggle"
@@ -19,25 +35,31 @@
         <span></span><span></span><span></span>
       </button>
 
-      <nav class="main-nav" :class="{ 'is-open': menuOpen }" aria-label="Navegação principal">
-        <a href="#inicio" class="nav-link" @click="closeMenu">Início</a>
-        <a href="#tradutor" class="nav-link" @click="closeMenu">Tradutor</a>
-        <a href="#cambio" class="nav-link" @click="closeMenu">Câmbio</a>
-        <a href="#sobre" class="nav-cta" @click="closeMenu">Sobre nós</a>
+      <nav
+        class="main-nav"
+        :class="{ 'is-open': menuOpen }"
+        aria-label="Navegação principal"
+      >
+        <RouterLink to="/inicio" class="nav-link" @click="closeMenu">
+          Início
+        </RouterLink>
+
+        <RouterLink to="/inicio#tradutor" class="nav-link" @click="closeMenu">
+          Tradutor
+        </RouterLink>
+
+        <RouterLink to="/cambio" class="nav-link" @click="closeMenu">
+          Câmbio
+        </RouterLink>
+
+        <RouterLink to="/inicio" class="nav-cta" @click="closeMenu">
+          Sobre nós
+        </RouterLink>
       </nav>
+
     </div>
   </header>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-
-const menuOpen = ref(false)
-
-function closeMenu() {
-  menuOpen.value = false
-}
-</script>
 
 <style scoped>
 .site-header {
