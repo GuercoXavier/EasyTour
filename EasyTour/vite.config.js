@@ -15,4 +15,10 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  // server: {
+  //   proxy: {
+  //     '/dictionary': 'http://localhost:3000',
+  //     '/translate': 'http://localhost:3000',
+  //   },
+  // },
 })
