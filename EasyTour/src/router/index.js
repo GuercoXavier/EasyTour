@@ -1,14 +1,19 @@
+
 import { createRouter, createWebHashHistory } from 'vue-router'
+
+import HomeView from '@/views/HomeView.vue'
 import CurrencyView from '@/views/CurrencyView.vue'
 
-/**
- * O componente é publicado no GitHub Pages, onde não é possível reescrever
- * pedidos para o index.html. O histórico por hash garante que qualquer rota
- * continua a funcionar ao actualizar a página.
- */
 const routes = [
   {
     path: '/',
+    alias: '/inicio',
+    name: 'home',
+    component: HomeView,
+    meta: { title: 'Início' },
+  },
+  {
+    path: '/cambio',
     name: 'currency',
     component: CurrencyView,
     meta: { title: 'Conversor de Moedas' },
@@ -24,12 +29,20 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes,
-  scrollBehavior: () => ({ top: 0 }),
+  scrollBehavior(to) {
+    if (to.hash) {
+      return {
+        el: to.hash,
+        behavior: 'smooth',
+      }
+    }
+
+    return { top: 0 }
+  },
 })
 
 router.afterEach((to) => {
-  const pageTitle = to.meta?.title ? `${to.meta.title} · EasyTour` : 'EasyTour · Conversor de Moedas'
-  document.title = pageTitle
+  document.title = `${to.meta?.title || 'EasyTour'} · EasyTour`
 })
 
 export default router
