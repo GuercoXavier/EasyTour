@@ -19,6 +19,12 @@ const routes = [
     meta: { title: 'Conversor de Moedas' },
   },
   {
+    path: '/tradutor',
+    name: 'translator',
+    component: () => import('@/views/TranslatorView.vue'),
+    meta: { title: 'Tradutor' },
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('@/views/NotFoundView.vue'),
