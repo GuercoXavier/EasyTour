@@ -52,7 +52,7 @@ function closeMenu() {
           Câmbio
         </RouterLink>
 
-        <RouterLink to="/inicio" class="nav-cta" @click="closeMenu">
+        <RouterLink to="/sobre" class="nav-cta" @click="closeMenu">
           Sobre nós
         </RouterLink>
       </nav>

@@ -54,6 +54,73 @@
         </div>
       </article>
     </section>
+
+    <section class="destinations-section">
+      <div class="section-heading">
+        <span class="eyebrow">EXPLORE MOÇAMBIQUE</span>
+        <h2>Destinos que merecem ser descobertos</h2>
+        <p>
+          Conheça alguns dos lugares mais fascinantes de Moçambique.
+        </p>
+      </div>
+
+      <div class="destinations-grid">
+        <article class="destination-card">
+          <div class="destination-visual island">
+            <span>🏝️</span>
+          </div>
+
+          <div class="destination-info">
+            <span class="destination-location">Nampula</span>
+            <h3>Ilha de Moçambique</h3>
+            <p>
+              Descubra a história, a cultura e a arquitectura
+              desta ilha histórica.
+            </p>
+            <RouterLink to="/destino/1" class="destination-link">
+              Explorar destino →
+            </RouterLink>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <div class="destination-visual beach">
+            <span>🌊</span>
+          </div>
+
+          <div class="destination-info">
+            <span class="destination-location">Inhambane</span>
+            <h3>Praia do Tofo</h3>
+            <p>
+              Desfrute das praias, das paisagens costeiras
+              e das actividades marítimas.
+            </p>
+            <RouterLink to="/destino/2" class="destination-link">
+              Explorar destino →
+            </RouterLink>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <div class="destination-visual gorongosa">
+            <span>🦁</span>
+          </div>
+
+          <div class="destination-info">
+            <span class="destination-location">Sofala</span>
+            <h3>Parque Nacional da Gorongosa</h3>
+            <p>
+              Explore a biodiversidade e as paisagens
+              naturais de Moçambique.
+            </p>
+            <RouterLink to="/destino/3" class="destination-link">
+              Explorar destino →
+            </RouterLink>
+          </div>
+        </article>
+      </div>
+    </section>
+
   </main>
 </template>
 
@@ -207,4 +274,118 @@
     padding: 20px;
   }
 }
+
+.destinations-section {
+  margin-top: 85px;
+}
+
+.section-heading {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.section-heading h2 {
+  margin: 12px 0;
+  color: #173f32;
+  font-size: clamp(25px, 4vw, 34px);
+}
+
+.section-heading p {
+  color: #64756b;
+  font-size: 15px;
+}
+
+.destinations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.destination-card {
+  overflow: hidden;
+  border: 1px solid #e4ece6;
+  border-radius: 15px;
+  background: white;
+  box-shadow: 0 8px 25px rgb(25 65 45 / 5%);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.destination-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgb(25 65 45 / 10%);
+}
+
+.destination-visual {
+  min-height: 155px;
+  display: grid;
+  place-items: center;
+  font-size: 65px;
+}
+
+.island {
+  background: #e4f3ed;
+}
+
+.beach {
+  background: #e1f2f7;
+}
+
+.gorongosa {
+  background: #edf2df;
+}
+
+.destination-info {
+  padding: 22px;
+}
+
+.destination-location {
+  color: #168052;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.destination-info h3 {
+  margin: 10px 0;
+  color: #173f32;
+  font-size: 19px;
+}
+
+.destination-info p {
+  min-height: 65px;
+  color: #64756b;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.destination-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: #168052;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.destination-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 850px) {
+  .destinations-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .destinations-section {
+    margin-top: 60px;
+  }
+
+  .destinations-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 </style>

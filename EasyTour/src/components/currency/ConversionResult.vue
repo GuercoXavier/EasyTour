@@ -1,6 +1,7 @@
+
 <script setup>
 import { computed } from 'vue'
-import { ArrowRight } from 'lucide-vue-next'
+import { ArrowRight, Copy } from 'lucide-vue-next'
 import { formatCurrencyAmount, formatRate } from '@/utils/format'
 
 const props = defineProps({
@@ -11,7 +12,21 @@ const props = defineProps({
   loading: { type: Boolean, default: false },
 })
 
+const emit = defineEmits(['copy'])
+
 const hasResult = computed(() => Boolean(props.result))
+
+function copyResult() {
+  if (!hasResult.value) return
+
+  emit('copy', {
+    value: props.result.value,
+    amount: props.amount,
+    from: props.from,
+    to: props.to,
+    rate: props.result.rate,
+  })
+}
 </script>
 
 <template>
@@ -40,10 +55,16 @@ const hasResult = computed(() => Boolean(props.result))
         {{ formatCurrencyAmount(amount) }} {{ from }} = {{ formatCurrencyAmount(result.value) }}
         {{ to }}
       </p>
+
       <p class="result__rate">
         <span class="result__sublabel">Taxa</span>
         1 {{ from }} = {{ formatRate(result.rate) }} {{ to }}
       </p>
+
+      <button class="result__copy" type="button" @click="copyResult">
+        <Copy :size="15" aria-hidden="true" />
+        Copiar resultado
+      </button>
     </div>
   </section>
 </template>
@@ -162,5 +183,25 @@ const hasResult = computed(() => Boolean(props.result))
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.45);
   min-width: 5.6rem;
+}
+
+.result__copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: 0.6rem;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.result__copy:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 </style>
