@@ -1,8 +1,9 @@
 
 import { createRouter, createWebHashHistory } from 'vue-router'
-
+import AboutView from '@/views/AboutView.vue'
 import HomeView from '@/views/HomeView.vue'
 import CurrencyView from '@/views/CurrencyView.vue'
+import DestinationView from '@/views/DestinationView.vue'
 
 const routes = [
   {
@@ -12,6 +13,12 @@ const routes = [
     component: HomeView,
     meta: { title: 'Início' },
   },
+  {
+    path: '/sobre',
+    name: 'about',
+    component: AboutView,
+    meta: { title: 'Sobre Nós' },
+  },  
   {
     path: '/cambio',
     name: 'currency',
@@ -24,6 +31,12 @@ const routes = [
     component: () => import('@/views/NotFoundView.vue'),
     meta: { title: 'Página não encontrada' },
   },
+  {
+  path: '/destino/:id',
+  name: 'destination',
+  component: DestinationView,
+  meta: { title: 'Detalhes do Destino' },
+},
 ]
 
 const router = createRouter({

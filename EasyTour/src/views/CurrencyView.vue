@@ -1,5 +1,6 @@
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import emailjs from '@emailjs/browser'
 import {
   Calculator,
   CircleAlert,
@@ -47,6 +48,85 @@ onMounted(() => {
   // Usa o cache da sessão quando existe, evitando pedidos desnecessários à API.
   if (!table.value) loadRates()
 })
+async function handleCopyResult(data) {
+  const text = `${formatCurrencyAmount(data.amount)} ${data.from} = ${formatCurrencyAmount(data.value)} ${data.to}`
+
+  try {
+    await navigator.clipboard.writeText(text)
+    alert('Resultado copiado com sucesso!')
+  } catch {
+    alert('Não foi possível copiar o resultado.')
+  }
+}
+// Integração EmailJS
+const email = ref('')
+const isSendingEmail = ref(false)
+const emailMessage = ref('')
+const emailMessageType = ref('')
+
+const formatEmailNumber = (value) =>
+  Number(value).toLocaleString('pt-PT', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
+
+async function sendConversionEmail() {
+  emailMessage.value = ''
+  emailMessageType.value = ''
+
+  if (!email.value.trim()) {
+    emailMessage.value = 'Introduza o seu endereço de email.'
+    emailMessageType.value = 'error'
+    return
+  }
+
+  if (!isValid.value || !result.value) {
+    emailMessage.value = 'Faça primeiro uma conversão válida.'
+    emailMessageType.value = 'error'
+    return
+  }
+
+  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID
+  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+
+  if (!serviceId || !templateId || !publicKey) {
+    emailMessage.value = 'A configuração do serviço de email está incompleta.'
+    emailMessageType.value = 'error'
+    return
+  }
+
+  isSendingEmail.value = true
+
+  try {
+    await emailjs.send(
+      serviceId,
+      templateId,
+      {
+        to_email: email.value.trim(),
+        reply_to: email.value.trim(),
+        name: 'Visitante EasyTour',
+        amount: formatEmailNumber(parsedAmount.value),
+        from_currency: from.value,
+        converted_amount: formatEmailNumber(result.value.value),
+        to_currency: to.value,
+        rate: String(result.value.rate),
+        date: new Date().toLocaleString('pt-PT'),
+      },
+      { publicKey },
+    )
+
+    emailMessage.value = 'Resumo enviado com sucesso! Verifique a sua caixa de entrada.'
+    emailMessageType.value = 'success'
+    email.value = ''
+  } catch (error) {
+    console.error('Erro ao enviar email:', error)
+    emailMessage.value = 'Não foi possível enviar o email. Tente novamente.'
+    emailMessageType.value = 'error'
+  } finally {
+    isSendingEmail.value = false
+  }
+}
 </script>
 
 <template>
@@ -180,12 +260,52 @@ onMounted(() => {
           </div>
 
           <ConversionResult
-            :result="result"
-            :amount="parsedAmount"
-            :from="from"
-            :to="to"
-            :loading="isLoading"
-          />
+              :result="result"
+              :amount="parsedAmount"
+              :from="from"
+              :to="to"
+              :loading="isLoading"
+              @copy="handleCopyResult"
+            />
+
+            <section class="email-card">
+  <div class="email-card__heading">
+    <h2>Receber conversão por email</h2>
+    <p>
+      Envie os detalhes desta conversão para o seu endereço de email.
+    </p>
+  </div>
+
+  <form class="email-form" @submit.prevent="sendConversionEmail">
+    <label for="conversion-email">Endereço de email</label>
+
+    <input
+      id="conversion-email"
+      v-model="email"
+      type="email"
+      placeholder="exemplo@gmail.com"
+      autocomplete="email"
+      required
+    />
+
+    <button
+      type="submit"
+      class="btn btn--primary"
+      :disabled="isSendingEmail || !result"
+    >
+      {{ isSendingEmail ? 'A enviar...' : 'Enviar resumo por email' }}
+    </button>
+
+    <p
+      v-if="emailMessage"
+      class="email-message"
+      :class="`email-message--${emailMessageType}`"
+      role="status"
+    >
+      {{ emailMessage }}
+    </p>
+  </form>
+</section>
 
           <p v-if="isValid && !result" class="converter__warning" role="status">
             Não existe taxa disponível para o par de moedas seleccionado. Escolha outra moeda ou
@@ -583,5 +703,70 @@ onMounted(() => {
   .is-spinning {
     animation-duration: 2.4s;
   }
+}
+.email-card {
+  padding: 1.25rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.email-card__heading {
+  margin-bottom: 1rem;
+}
+
+.email-card__heading h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy-900);
+}
+
+.email-card__heading p {
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.email-form {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.email-form label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--navy-800);
+}
+
+.email-form input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  font: inherit;
+}
+
+.email-form input:focus {
+  outline: 2px solid var(--blue-500);
+  outline-offset: 2px;
+}
+
+.email-form button {
+  justify-self: start;
+  margin-top: 0.3rem;
+}
+
+.email-message {
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.email-message--success {
+  color: #15803d;
+}
+
+.email-message--error {
+  color: #dc2626;
 }
 </style>
