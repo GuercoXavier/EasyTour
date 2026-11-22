@@ -12,6 +12,7 @@ import tradutor from "./components/tradutor.vue";
     <!-- Conteúdo das páginas, incluindo o conversor -->
     <main class="shell main">
       <RouterView />
+      <tradutor />
     </main>
 
     <!-- Rodapé do EasyTour -->
