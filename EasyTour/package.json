@@ -11,9 +11,8 @@
   "dependencies": {
     "@emailjs/browser": "^5.0.3",
     "lucide-vue-next": "^1.0.0",
-    "vue": "rc",
-    "vue-router": "^5.5.1",
-    "vue": "3.5.46"
+    "vue": "3.5.46",
+    "vue-router": "^4.4.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.8",
