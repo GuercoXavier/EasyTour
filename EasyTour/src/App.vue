@@ -1,12 +1,10 @@
-
 <script setup>
-import AppHeader from './components/AppHeader.vue'
-import AppFooter from './components/AppFooter.vue'
+import AppHeader from "./components/AppHeader.vue";
+import AppFooter from "./components/AppFooter.vue";
 </script>
 
 <template>
   <div class="app">
-
     <!-- Cabeçalho do EasyTour -->
     <AppHeader />
 
@@ -17,7 +15,6 @@ import AppFooter from './components/AppFooter.vue'
 
     <!-- Rodapé do EasyTour -->
     <AppFooter />
-
   </div>
 </template>
 
